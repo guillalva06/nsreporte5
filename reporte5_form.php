@@ -8,20 +8,24 @@
     function definition() {
  
         $mform =& $this->_form;
-        $mform->addElement('text','filtro1', 'Palabra clave');
-        $mform->addRule('filtro1', null, 'required', null, 'client');
-        $mform->setType('filtro1', PARAM_TEXT);                
 
         $periodos= array('0'=>'Seleccione un periodo');
-        $select=$mform->addElement('select', 'periodos', 'Periodo',$periodos);
-        $mform->addElement('hidden','periodo');
-        $mform->setType('periodo', PARAM_INT);        
+        $select=$mform->addElement('select', 'periodos', 'Periodo',$periodos);               
 
         $variantes = array('0'=>'Seleccione una variante');
         $mform->addElement('select','variantes','Variante',$variantes);
-        $mform->addElement('hidden','variante');
-        $mform->setType('variante', PARAM_INT);
-        $this->add_action_buttons();
+        
+        $mform->addElement('text','nombre_categoria', 'Palabra clave');
+        $mform->addRule('nombre_categoria', null, 'required', null, 'client');
+        $mform->setType('nombre_categoria', PARAM_TEXT);   
+
+        $componentes = array('0'=>'Seleccione un Componente');
+        $select=$mform->addElement('select', 'componentes', 'Componente',$componentes);
+        $mform->addElement('hidden','componente_id');
+        $mform->setType('componente_id', PARAM_INT);   
+
+        //Disable form checker when reload 
+        $mform->disable_form_change_checker();     
       
   }
 }
