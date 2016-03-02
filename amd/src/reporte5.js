@@ -36,7 +36,7 @@ $(document).ready(function(){
 				var variantes = jQuery.parseJSON(data);
 				$('#id_variantes').empty();
 				$('#id_variantes').append($('<option>',{
-						value: '0',
+						value: '',
 						text: 'Seleccione una variante'
 					}));
 				$.each(variantes,function(v,variante){

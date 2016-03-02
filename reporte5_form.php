@@ -10,16 +10,16 @@
         $mform =& $this->_form;
 
         //Choose Period
-        $periodos= array('0'=>'Seleccione un periodo');
-        $select=$mform->addElement('select', 'periodos', 'Periodo',$periodos);  
+        $periods= array(''=>'Seleccione un periodo');
+        $select=$mform->addElement('select', 'periodos', 'Periodo',$periods);  
         $mform->addRule('periodos', null, 'required', null, 'client');             
         //Hidden value to save the selection
         $mform->addElement('hidden','periodo_id');
         $mform->setType('periodo_id', PARAM_INT);           
 
         //Select variant
-        $variantes = array('0'=>'Seleccione una variante');
-        $mform->addElement('select','variantes','Variante',$variantes);
+        $variants = array(''=>'Seleccione una variante');
+        $mform->addElement('select','variantes','Variante',$variants);
         $mform->addRule('variantes', null, 'required', null, 'client');
         //Hidden value to save the selection
         $mform->addElement('hidden','variante_id');
