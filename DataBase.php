@@ -102,77 +102,75 @@ class DataBase{
 		return $courses;
 	}
 
-	public static function printDataReport($courses){
+	public static function printDataReport($courses, $toexcel = false){
       $attr = array('border' => 0, 'width' => '100%',
           'class' => 'pure-table');        
       $oddrow = array('border' => 0, 'width' => '100%',
           'class' => 'pure-table-odd');             
       //Rows of the Table
-      $htmltable = '';
+      $htmltable = '';                          
+      $htmltable.= html_writer::start_tag('table',$attr); 
+      //Headers of the table
+      $htmltable.= html_writer::start_tag('tr');                   
+      $htmltable.= html_writer::tag('th','ID Curso');
+      $htmltable.= html_writer::tag('th','Nombre del Curso');
+      $htmltable.= html_writer::tag('th','Docente');
+      $htmltable.= html_writer::tag('th','Cédula');
+      $htmltable.= html_writer::tag('th','Datos de Autorización');
+      $htmltable.= html_writer::end_tag('tr');
       foreach ($courses as $key=>$course) {
         //Informaticon of every course               
-        $countrows = 0;   
-        //Generar el path
-        $strpath = '';          
-        $arraypath = explode('/',$paths[$key]);
-        for($i = 1; $i < count($arraypath);$i++){
-          $nameparent = $DB->get_record_sql('SELECT mdl_course_categories.name 
-              from mdl_course_categories 
-              where mdl_course_categories.id = ?',array($arraypath[$i]));
-          $strpath.=$nameparent->name;     
-          if($i!=count($arraypath)-1){
-            $strpath.='/';     
-          }
-        }        
-        $htmltable.= html_writer::tag('h3',$strpath);                         
-        $htmltable.= html_writer::start_tag('table',$attr); 
-        //Headers of the table
-        $htmltable.= html_writer::start_tag('tr');                   
-        $htmltable.= html_writer::tag('th','ID Curso');
-        $htmltable.= html_writer::tag('th','Nombre del Curso');
-        $htmltable.= html_writer::tag('th','Docente');
-        $htmltable.= html_writer::tag('th','Cédula');
-        $htmltable.= html_writer::tag('th','Datos de Autorización');
-        $htmltable.= html_writer::end_tag('tr');                          
+        $countrows = 0;                                           
         foreach ($course as $teacherid => $teacher) {         
-          $countrows++;     
+          $countrows++;  
+          $row = '';    
           if($countrows%2!=0){
-            $htmltable.= html_writer::start_tag('tr',$oddrow);  
+            $row.= html_writer::start_tag('tr',$oddrow);  
           }else{
-            $htmltable.= html_writer::start_tag('tr');  
+            $row.= html_writer::start_tag('tr');  
           }              
-          # Information of each teacher              
-          $htmltable.= html_writer::tag('td',$teacher->courseid);              
-          $htmltable.= html_writer::tag('td',$teacher->coursename);
-          $htmltable.= html_writer::tag('td',$teacher->firstname.' '.$teacher->lastname);              
-          $htmltable.= html_writer::tag('td',$teacherid);
-          $htmltable.= html_writer::start_tag('td');
-          $htmltable.= html_writer::start_tag('table',$attr);                
-          if($countrows%2!=0){
-            $htmltable.= html_writer::start_tag('tr',$oddrow);  
+          # Information of each teacher             
+          $row.= html_writer::tag('td',$teacher->courseid);              
+          $row.= html_writer::tag('td',$teacher->coursename);
+          $row.= html_writer::tag('td',$teacher->firstname.' '.$teacher->lastname);              
+          $row.= html_writer::tag('td',$teacherid);        
+          if($toexcel){            
+            foreach ($teacher->permissions as $permission) {
+                # code...                
+                $htmltable.=$row;
+                $htmltable.= html_writer::tag('td',$permission);                
+                $htmltable.= html_writer::end_tag('tr');
+            }
           }else{
-            $htmltable.= html_writer::start_tag('tr');  
-          }  
-          $htmltable.= html_writer::tag('th','Fecha');                  
-          $htmltable.= html_writer::end_tag('tr');                
-          foreach ($teacher->permissions as $permission) {
-              # code...                
-              if($countrows%2!=0){
-                $htmltable.= html_writer::start_tag('tr',$oddrow);                    
-              }else{                  
-                $htmltable.= html_writer::start_tag('tr');                                                 
-              }                
-              $htmltable.= html_writer::tag('td',$permission);                
-              $htmltable.= html_writer::end_tag('tr');
-          }
-          $htmltable.= html_writer::end_tag('table'); 
-          $htmltable.= html_writer::end_tag('td');              
-          $htmltable.= html_writer::end_tag('tr');
+            $row.= html_writer::start_tag('td');
+            $htmltable.=$row;
+            $htmltable.= html_writer::start_tag('table',$attr);                
+            if($countrows%2!=0){
+              $htmltable.= html_writer::start_tag('tr',$oddrow);  
+            }else{
+              $htmltable.= html_writer::start_tag('tr');  
+            }  
+            $htmltable.= html_writer::tag('th','Fecha');                  
+            $htmltable.= html_writer::end_tag('tr');                
+            foreach ($teacher->permissions as $permission) {
+                # code...                
+                if($countrows%2!=0){
+                  $htmltable.= html_writer::start_tag('tr',$oddrow);                    
+                }else{                  
+                  $htmltable.= html_writer::start_tag('tr');                                                 
+                }                
+                $htmltable.= html_writer::tag('td',$permission);                
+                $htmltable.= html_writer::end_tag('tr');
+            }
+            $htmltable.= html_writer::end_tag('table');            
+            $htmltable.= html_writer::end_tag('td');              
+            $htmltable.= html_writer::end_tag('tr'); 
+          }                            
         }            
-        $htmltable.= html_writer::end_tag('table');  
-        $htmltable.= html_writer::tag('br',null);
       } 	
-    return $htmltable;	
+      $htmltable.= html_writer::end_tag('table');  
+      $htmltable.= html_writer::tag('br',null);
+      return $htmltable;	
 	}
 	
 

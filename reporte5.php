@@ -44,9 +44,9 @@
         //Find courses that are contained on the component 
         $courses = DataBase::getDataReport($componente_id,$path);       
           //Print Table of Permissions
-        $htmltable = DataBase::printDataReport($courses);
-        print_object($htmltable);
+        $htmltable = DataBase::printDataReport($courses);        
         echo $htmltable;
+        echo (DataBase::printDataReport($courses,true));
       }            
   	}
   }   
