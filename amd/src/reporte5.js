@@ -49,6 +49,30 @@ $(document).ready(function(){
 		});
 	};
 
+	$('#download_button').click(function(){
+		console.log(getUrlVars());		
+		path = '/'+periodo+'/'+variante+'/%';	
+		var params = getUrlVars();	
+		var componente_id = params['componente_id'];
+		var periodo = params['periodo_id'];
+		var variante = params['variante_id'];
+ 		window.location.href = "exportreport5.php?componente_id="+componente_id+"&periodo_id="+periodo+"&variante_id="+variante;
+		
+	});
+
+	function getUrlVars(){
+	    var vars = [], hash;
+	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++)
+	    {
+	        hash = hashes[i].split('=');
+	        vars.push(hash[0]);
+	        vars[hash[0]] = hash[1];
+	    }
+	    return vars;
+	}
+
+
 	function get_componentes(namecategory, path){
 		$.ajax({
 			url:'consultas_reporte5.php',

@@ -78,7 +78,7 @@ class DataBase{
 
 	public static function getDataReport($componente_id,$path){      
         //Find courses that are contained on the component 
-        if($componente_id!=-1){
+        if($componente_id!=-1){          
           $set_courses = DataBase::getCoursesOnComponent($componente_id);          
         }else{
           //Find all the courses that have permission in all the components on the period-variant               
@@ -98,7 +98,7 @@ class DataBase{
             }
             array_push($courses[$courseid][$data->idnumber]->permissions ,  date("Y-m-d H:i:s",$data->timecreated));
           }
-        }        
+        }      
 		return $courses;
 	}
 

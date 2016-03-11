@@ -46,7 +46,7 @@
           //Print Table of Permissions
         $htmltable = DataBase::printDataReport($courses);        
         echo $htmltable;
-        echo (DataBase::printDataReport($courses,true));
+        echo html_writer::tag('button','Excel',array('id'=>'download_button'));
       }            
   	}
   }   
