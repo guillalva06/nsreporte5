@@ -49,8 +49,7 @@ $(document).ready(function(){
 		});
 	};
 
-	$('#download_button').click(function(){
-		console.log(getUrlVars());		
+	$('#download_button').click(function(){		
 		path = '/'+periodo+'/'+variante+'/%';	
 		var params = getUrlVars();	
 		var componente_id = params['componente_id'];

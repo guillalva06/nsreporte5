@@ -36,7 +36,7 @@ class DataBase{
 		return $componentes;
 	}
 
-	private static function getCoursesOnComponent($componente_id){
+	private static function getCoursesOnComponent($componente_id,$path){
 		global $DB,$CFG;
 		$set_courses = $DB->get_records_sql("SELECT  distinct({$CFG->prefix}course.id), 
             {$CFG->prefix}course.fullname as namecourse,
@@ -44,7 +44,9 @@ class DataBase{
             from  {$CFG->prefix}course, {$CFG->prefix}nspermission,
                   {$CFG->prefix}course_categories                                
             where  {$CFG->prefix}course.category = ?
-            and {$CFG->prefix}course.id = {$CFG->prefix}nspermission.courseid",array($componente_id));
+            and {$CFG->prefix}course.category ={$CFG->prefix}course_categories.id
+            and {$CFG->prefix}course.id = {$CFG->prefix}nspermission.courseid
+            and {$CFG->prefix}course_categories.path like ?",array($componente_id,$path));
 		return $set_courses;
 	}
 
@@ -79,7 +81,7 @@ class DataBase{
 	public static function getDataReport($componente_id,$path){      
         //Find courses that are contained on the component 
         if($componente_id!=-1){          
-          $set_courses = DataBase::getCoursesOnComponent($componente_id);          
+          $set_courses = DataBase::getCoursesOnComponent($componente_id,$path);          
         }else{
           //Find all the courses that have permission in all the components on the period-variant               
           $set_courses = DataBase::getCoursesOnPath($path);          
